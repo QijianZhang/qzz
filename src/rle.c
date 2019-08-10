@@ -50,13 +50,11 @@ void qzz_rle_encode(const uint8_t *data, size_t size, Str output)
 {
 	Str_clear(output);
 
-	size_t count = 0;
-
-	while (count < size) {
-		size_t c = count_same_bytes(data, size - count);
+	while (size > 0) {
+		size_t c = count_same_bytes(data, size);
 		encode_push(output, data[0], c);
-		count += c;
-		data += count;
+		size -= c;
+		data += c;
 	}
 	Str_shrink(output);
 }
