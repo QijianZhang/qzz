@@ -22,8 +22,9 @@
 
 void check_rle()
 {
-	// 17 q 24 z
-	uint8_t data[] = "qqqqqqqqqqqqqqqqqqzzzzzzzzzzzzzzzzzzzzzzzzz";
+	// 17 q 24 z 17 q 24 z
+	uint8_t data[] = "qqqqqqqqqqqqqqqqqqzzzzzzzzzzzzzzzzzzzzzzzzz"
+			 "qqqqqqqqqqqqqqqqqqzzzzzzzzzzzzzzzzzzzzzzzzz";
 	size_t data_size = sizeof(data) - 1;
 
 	Str encoded = Str_newWithCapacity(0);
@@ -32,11 +33,15 @@ void check_rle()
 	qzz_rle_encode(data, data_size, encoded);
 	qzz_rle_decode(Str_data(encoded), Str_getLength(encoded), decoded);
 
-	assert(4 == Str_getLength(encoded));
+	assert(8 == Str_getLength(encoded));
 	assert(17 == Str_get(encoded, 0));
 	assert('q' == Str_get(encoded, 1));
 	assert(24 == Str_get(encoded, 2));
 	assert('z' == Str_get(encoded, 3));
+	assert(17 == Str_get(encoded, 4));
+	assert('q' == Str_get(encoded, 5));
+	assert(24 == Str_get(encoded, 6));
+	assert('z' == Str_get(encoded, 7));
 
 	assert(data_size == Str_getLength(decoded));
 	assert(0 == strncmp(data, Str_data(decoded), data_size));
